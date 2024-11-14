@@ -10,44 +10,55 @@ import java.util.List;
 
 public class CurrencyExchangeApp {
 
+    private static String greedySolution;
+    private static double greedyTime;
+    private static String exhaustiveSolution;
+    private static double exhaustiveTime;
+    private static String cutPriceShareSolution;
+    private static double cutPriceShareTime;
+
     public static void main(String[] args) {
         double amountToExchange = 6.5;
         List<Double> coinDenominations = Arrays.asList(5.0, 2.0, 1.0, 0.5, 0.2, 0.1, 0.05);
 
-        // Run Greedy Approach with Computation Time
-        System.out.println("Greedy Currency Exchange");
+        // Run each approach independently
+        System.out.println("Greedy Currency Exchange:");
         runGreedyApproach(coinDenominations, amountToExchange);
 
-        // Run Dynamic Programming Exhaustive Approach with Computation Time
-        System.out.println("\nCalculating All Possibilities");
+        System.out.println("\nExhaustive Dynamic Programming Approach:");
         runExhaustiveApproach(coinDenominations, amountToExchange);
 
-        // Run Dynamic Cut, Price, and Share Approach with Computation Time
-        System.out.println("\nDynamic Cut, Price, and Share Approach");
+        System.out.println("\nDynamic Cut, Price, and Share Approach:");
         runCutPriceShareApproach(coinDenominations, amountToExchange);
+
+        // Display the summary table
+        displaySummaryTable();
     }
 
     private static void runGreedyApproach(List<Double> coinDenominations, double amount) {
         long startTime = System.nanoTime();
 
         GreedyCurrencyExchange greedyExchange = new GreedyCurrencyExchange(coinDenominations, amount);
-        System.out.println(greedyExchange.getExchangeResult());
+        greedySolution = formatSolution(greedyExchange.getExchangeResult());
 
         long endTime = System.nanoTime();
-        long duration = endTime - startTime;
-        System.out.println("Greedy approach computation time: " + duration / 1_000_000.0 + " ms");
+        greedyTime = (endTime - startTime) / 1_000_000.0;
+
+        System.out.println("Solution: " + greedySolution);
+        System.out.println("Computation Time: " + greedyTime + " ms");
     }
 
     private static void runExhaustiveApproach(List<Double> coinDenominations, double amount) {
         long startTime = System.nanoTime();
 
         ExhaustiveCalculator exhaustiveCalculator = new ExhaustiveCalculator(coinDenominations, amount);
-        exhaustiveCalculator.getAllPossibilities().forEach(System.out::println);
-        System.out.println("\nBest solution (exhaustive): " + formatSolution(exhaustiveCalculator.getBestSolution()));
+        exhaustiveSolution = formatSolution(exhaustiveCalculator.getBestSolution());
 
         long endTime = System.nanoTime();
-        long duration = endTime - startTime;
-        System.out.println("Exhaustive approach computation time: " + duration / 1_000_000.0 + " ms");
+        exhaustiveTime = (endTime - startTime) / 1_000_000.0;
+
+        System.out.println("Solution: " + exhaustiveSolution);
+        System.out.println("Computation Time: " + exhaustiveTime + " ms");
     }
 
     private static void runCutPriceShareApproach(List<Double> coinDenominations, double amount) {
@@ -55,11 +66,26 @@ public class CurrencyExchangeApp {
 
         ExhaustiveCalculator exhaustiveCalculator = new ExhaustiveCalculator(coinDenominations, amount);
         List<Double> bestSolution = exhaustiveCalculator.calculateBestSolutionWithCutAndShare();
-        System.out.println("Best solution (cut, price, and share): " + formatSolution(bestSolution));
+        cutPriceShareSolution = formatSolution(bestSolution);
 
         long endTime = System.nanoTime();
-        long duration = endTime - startTime;
-        System.out.println("Cut, price, and share approach computation time: " + duration / 1_000_000.0 + " ms");
+        cutPriceShareTime = (endTime - startTime) / 1_000_000.0;
+
+        System.out.println("Solution: " + cutPriceShareSolution);
+        System.out.println("Computation Time: " + cutPriceShareTime + " ms");
+    }
+
+    private static void displaySummaryTable() {
+        System.out.println("\nSummary of All Approaches:");
+        System.out.printf("%-30s\t%-60s\t%-20s%n", "Approach", "Solution", "Computation Time (ms)");
+        System.out.println("=".repeat(130));
+
+        System.out.printf("%-30s\t%-60s\t%-20.4f%n", "Greedy Approach", greedySolution, greedyTime);
+        System.out.println("-".repeat(130));
+        System.out.printf("%-30s\t%-60s\t%-20.4f%n", "Exhaustive Approach", exhaustiveSolution, exhaustiveTime);
+        System.out.println("-".repeat(130));
+        System.out.printf("%-30s\t%-60s\t%-20.4f%n", "Cut, Price, and Share Approach", cutPriceShareSolution, cutPriceShareTime);
+        System.out.println("=".repeat(130));
     }
 
     // Method to format solution for readability

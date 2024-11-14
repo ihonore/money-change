@@ -10,7 +10,7 @@ import java.util.*;
 public class GreedyCurrencyExchange {
     private double amountToExchange;
     private List<Double> coinDenominations;
-    private LinkedList<String> exchangeDetails = new LinkedList<>();
+    private List<Double> exchangeDetails = new ArrayList<>();
 
     public GreedyCurrencyExchange(List<Double> coinDenominations, double amountToExchange) {
         this.coinDenominations = new ArrayList<>(coinDenominations);
@@ -23,14 +23,14 @@ public class GreedyCurrencyExchange {
 
         for (double coin : coinDenominations) {
             int numCoins = (int) Math.floor(amountToExchange / coin);
-            if (numCoins > 0) {
-                exchangeDetails.add(numCoins + " Coins of " + coin + " Euros");
-                amountToExchange -= numCoins * coin;
+            for (int i = 0; i < numCoins; i++) {
+                exchangeDetails.add(coin);  // Add each coin individually
             }
+            amountToExchange -= numCoins * coin;
         }
     }
 
-    public LinkedList<String> getExchangeResult() {
+    public List<Double> getExchangeResult() {
         return exchangeDetails;
     }
 
