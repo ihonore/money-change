@@ -18,7 +18,7 @@ public class CurrencyExchangeApp {
     private static double cutPriceShareTime;
 
     public static void main(String[] args) {
-        double amountToExchange = 6.5;
+        double amountToExchange = 12.35;
         List<Double> coinDenominations = Arrays.asList(5.0, 2.0, 1.0, 0.5, 0.2, 0.1, 0.05);
 
         // Run each approach independently
