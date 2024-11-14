@@ -11,20 +11,20 @@ import java.util.List;
 public class CurrencyExchangeApp {
 
     public static void main(String[] args) {
-        double amountToExchange = 12.35;
+        double amountToExchange = 6.5;
         List<Double> coinDenominations = Arrays.asList(5.0, 2.0, 1.0, 0.5, 0.2, 0.1, 0.05);
 
-//        // Run Greedy Approach with Computation Time
-//        System.out.println("\nGreedy Currency Exchange");
-//        runGreedyApproach(coinDenominations, amountToExchange);
+        // Run Greedy Approach with Computation Time
+        System.out.println("Greedy Currency Exchange");
+        runGreedyApproach(coinDenominations, amountToExchange);
 
         // Run Dynamic Programming Exhaustive Approach with Computation Time
         System.out.println("\nCalculating All Possibilities");
         runExhaustiveApproach(coinDenominations, amountToExchange);
 
-//        // Run Dynamic Cut, Price, and Share Approach with Computation Time
-//        System.out.println("\nDynamic Cut, Price, and Share Approach");
-//        runCutPriceShareApproach(coinDenominations, amountToExchange);
+        // Run Dynamic Cut, Price, and Share Approach with Computation Time
+        System.out.println("\nDynamic Cut, Price, and Share Approach");
+        runCutPriceShareApproach(coinDenominations, amountToExchange);
     }
 
     private static void runGreedyApproach(List<Double> coinDenominations, double amount) {
@@ -43,7 +43,7 @@ public class CurrencyExchangeApp {
 
         ExhaustiveCalculator exhaustiveCalculator = new ExhaustiveCalculator(coinDenominations, amount);
         exhaustiveCalculator.getAllPossibilities().forEach(System.out::println);
-        System.out.println("\nBest solution (exhaustive): " + exhaustiveCalculator.getBestSolution());
+        System.out.println("\nBest solution (exhaustive): " + formatSolution(exhaustiveCalculator.getBestSolution()));
 
         long endTime = System.nanoTime();
         long duration = endTime - startTime;
@@ -55,10 +55,23 @@ public class CurrencyExchangeApp {
 
         ExhaustiveCalculator exhaustiveCalculator = new ExhaustiveCalculator(coinDenominations, amount);
         List<Double> bestSolution = exhaustiveCalculator.calculateBestSolutionWithCutAndShare();
-        System.out.println("Best solution (cut, price, and share): " + bestSolution);
+        System.out.println("Best solution (cut, price, and share): " + formatSolution(bestSolution));
 
         long endTime = System.nanoTime();
         long duration = endTime - startTime;
         System.out.println("Cut, price, and share approach computation time: " + duration / 1_000_000.0 + " ms");
+    }
+
+    // Method to format solution for readability
+    private static String formatSolution(List<Double> solution) {
+        if (solution == null || solution.isEmpty()) return "No solution found";
+
+        StringBuilder formatted = new StringBuilder();
+        solution.stream().distinct().forEach(coin -> {
+            long count = solution.stream().filter(c -> c.equals(coin)).count();
+            formatted.append(count).append(" Coins of ").append(coin).append(" Euros, ");
+        });
+
+        return formatted.substring(0, formatted.length() - 2); // Remove trailing comma and space
     }
 }

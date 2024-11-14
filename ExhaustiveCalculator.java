@@ -14,7 +14,7 @@ public class ExhaustiveCalculator {
     private List<List<Double>> allSolutions = new ArrayList<>();
     private List<Double> bestSolution = null;
     private int minCoins = Integer.MAX_VALUE;
-    private Map<Double, Integer> memoization = new HashMap<>(); // For memoization
+    private Map<Double, Integer> memoization = new HashMap<>();
 
     public ExhaustiveCalculator(List<Double> coinDenominations, double targetAmount) {
         this.coinDenominations = new ArrayList<>(coinDenominations);
@@ -57,7 +57,7 @@ public class ExhaustiveCalculator {
         }
     }
 
-    // New method to use cut, price, and share optimization
+    // Optimized method to use cut, price, and share
     public List<Double> calculateBestSolutionWithCutAndShare() {
         minCoins = Integer.MAX_VALUE;
         bestSolution = null;
